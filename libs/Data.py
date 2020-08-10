@@ -120,6 +120,10 @@ class Cache:
     shell_dat = "cache/shell.dat"
     flag_dat = "cache/flag.dat"
 
+    def __init__(self):
+        if os.path.exists('cache'):
+            os.makedirs('cache')
+
     def do_cache(self, target, shell):
         if len(target.targets) + len(shell.shell) == 0:
             return Log.error("Still have not target or shell, please add first")
