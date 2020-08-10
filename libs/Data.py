@@ -62,7 +62,7 @@ class Targets:
                 Log.show('')
         if i % 5 != 0:
             Log.show('')
-        Log.blue('\nTotal ip: {}'.format(len(self.targets)))
+        Log.blue('\nTotal target: {}'.format(len(self.targets)))
 
 
 class WebShell:
@@ -164,7 +164,7 @@ class Cache:
 
     @staticmethod
     def save_flag(flag):
-        # flag格式： {target:flag, }
+        # flag格式： {target:[flag], }
         with open(Cache.flag_dat, 'a') as f:
             now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
             f.write("\n" + "*"*73 + "\n")

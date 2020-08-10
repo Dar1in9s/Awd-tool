@@ -1,4 +1,6 @@
 __pycache__/
 .idea/
+test.py
+*.dat
 *.py[cod]
 *$py.class

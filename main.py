@@ -14,7 +14,7 @@ def main():
         'help', 'clear_targets', 'add_target', 'show_targets',
         'del_webshell', 'add_webshell', 'show_webshell',
         'do_cache', 'load_cache', 'clear_cache',
-        'show_flag', 'operate_shell', 'upload_horse', 'submit_flag', 'custom_attack',
+        'show_flag', 'operate_shell', 'upload_horse', 'submit_flag', 'custom_attack', 'custom_request',
         'exit', 'quit'
     ])
     awd = Awd()
@@ -54,6 +54,8 @@ def main():
             awd.submit_flag()
         elif user_input == 'custom_attack':
             awd.custom_attack()
+        elif user_input == 'custom_request':
+            awd.custom_request()
         else:
             print('\033[33mWhat Do You Mean?\033[0m')
         print()

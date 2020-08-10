@@ -7,8 +7,6 @@ Write horse in/var/www/html/include/shell.php Ok!
 Write horse in/var/www/html/include/log1.php Ok!
 Write horse in/var/www/html/include/config.php Ok!
 Write horse in/var/www/html/include/Horse.php Ok!
-Write horse in/var/www/html/include/.sss.php Ok!
-Write horse in/var/www/html/include/.config_cdut.php Ok!
 Write horse in/var/www/html/index.php Ok!
 Write horse in/var/www/html/org/smarty/Smarty.class.php Ok!
 Write horse in/var/www/html/org/smarty/SmartyBC.class.php Ok!

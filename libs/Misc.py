@@ -29,15 +29,15 @@ class Log:
 
     @staticmethod
     def red(info, end="\n"):
-        print("\033[31m"+info+"\033[0m", end=end)
+        print("\033[31m{}\033[0m".format(info), end=end)
 
     @staticmethod
     def green(info, end="\n"):
-        print("\033[32m"+info+"\033[0m", end=end)
+        print("\033[32m{}\033[0m".format(info), end=end)
 
     @staticmethod
     def blue(info, end="\n"):
-        print("\033[36m"+info+"\033[0m", end=end)
+        print("\033[36m{}\033[0m".format(info), end=end)
 
 
 class Config:
@@ -46,6 +46,7 @@ class Config:
     flag_format = None
     eval_base64_coding = None
     undead_horse_name = None
+    custom_request_headers = None
 
     @staticmethod
     def update_config():
@@ -60,3 +61,4 @@ class Config:
         Config.proxy = data['proxy']
         Config.flag_format = r'{}'.format(data['flag_format']) if data['flag_format'] else None
         Config.eval_base64_coding = data['eval_base64_coding']
+        Config.custom_request_headers = data['custom_request_headers']

