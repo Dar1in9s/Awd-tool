@@ -4,7 +4,6 @@ from libs.ShellRequest import ShellRequest
 from plugs.submit import submit
 import re
 import os
-import time
 import importlib
 
 
@@ -87,7 +86,7 @@ class Awd:
                     flag_flag = self.process_result(result, target, flag_flag)
 
             if flag_flag:
-                self.save_flag()
+                Cache.save_flag(self.flag)
 
     def custom_attack(self):
         Log.show('Input the exp name.')
@@ -99,7 +98,7 @@ class Awd:
                 result = exp.attack(target)
                 flag_flag = self.process_result(result, target, flag_flag)
             if flag_flag:
-                self.save_flag()
+                Cache.save_flag(self.flag)
         else:
             Log.error("Your input exp not exists.")
 
@@ -182,11 +181,3 @@ class Awd:
                 Log.show(result)
         return flag_flag
 
-    def save_flag(self):
-        with open(Cache.flag_dat, 'a') as f:
-            now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            f.write("\n" + "*"*73 + "\n")
-            f.write("-"*27 + now_time + "-"*27 + "\n")
-            f.write("*"*73 + "\n\n")
-            for flag in self.flag.values():
-                f.write("{}\n".format(flag))

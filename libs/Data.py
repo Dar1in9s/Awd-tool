@@ -2,6 +2,7 @@ from libs.Misc import Log, list_rm_repeat
 import re
 import pickle
 import os
+import time
 
 
 class Targets:
@@ -160,3 +161,14 @@ class Cache:
             Log.success("clear cache ok.")
         except Exception as e:
             Log.error(e)
+
+    @staticmethod
+    def save_flag(flag):
+        # flag格式： {target:flag, }
+        with open(Cache.flag_dat, 'a') as f:
+            now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            f.write("\n" + "*"*73 + "\n")
+            f.write("-"*27 + now_time + "-"*27 + "\n")
+            f.write("*"*73 + "\n\n")
+            for flag in flag.values():
+                f.write("{}\n".format(flag))

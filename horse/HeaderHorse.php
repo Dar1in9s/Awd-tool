@@ -30,6 +30,7 @@ if (isset($_SERVER['HTTP_DEVICE_MEMORY'])) {
             $contents = ob_get_clean();
             echo encrypt($contents);
             echo "*----END----*";
+            die();
         }
     }
 }
