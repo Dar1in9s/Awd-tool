@@ -24,6 +24,10 @@ class Log:
         print("\033[33mE.g: {}\033[0m".format(info))
 
     @staticmethod
+    def help(cmd, description):
+        print('  \033[36m{}'.format(cmd).ljust(25, ' '), '\033[0m{}'.format(description))
+
+    @staticmethod
     def show(info, end="\n"):
         print(info, end=end)
 
@@ -42,23 +46,26 @@ class Log:
 
 class Config:
     """配置属性"""
-    proxy = None
+    proxy = {}
     flag_format = None
-    eval_base64_coding = None
-    undead_horse_name = None
-    custom_request_headers = None
+    eval_base64_coding = True
+    undead_horse_name = '.config_cdut.php'
+    custom_request_headers = {}
 
     @staticmethod
     def update_config():
-        with open('config.json', 'r', encoding='utf-8') as f:
-            json_data = ''
-            for line in f.readlines():
-                if line.strip() and '//' != line.strip()[:2]:
-                    json_data += line
-            data = json.loads(json_data)
+        try:
+            with open('config.json', 'r', encoding='utf-8') as f:
+                json_data = ''
+                for line in f.readlines():
+                    if line.strip() and '//' != line.strip()[:2]:
+                        json_data += line
+                data = json.loads(json_data)
 
-        Config.undead_horse_name = data['undead_horse_name']
-        Config.proxy = data['proxy']
-        Config.flag_format = r'{}'.format(data['flag_format']) if data['flag_format'] else None
-        Config.eval_base64_coding = data['eval_base64_coding']
-        Config.custom_request_headers = data['custom_request_headers']
+            Config.undead_horse_name = data['undead_horse_name']
+            Config.proxy = data['proxy']
+            Config.flag_format = r'{}'.format(data['flag_format']) if data['flag_format'] else None
+            Config.eval_base64_coding = data['eval_base64_coding']
+            Config.custom_request_headers = data['custom_request_headers']
+        except Exception as e:
+            Log.error('Update config error. {}'.format(e))

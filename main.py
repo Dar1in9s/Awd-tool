@@ -22,7 +22,9 @@ def main():
         user_input = prompt('$ ', history=history, completer=command)
         user_input = user_input.strip()
         Config.update_config()
-        if user_input == 'exit' or user_input == 'quit':
+        if user_input == '':
+            pass
+        elif user_input == 'exit' or user_input == 'quit':
             break
         elif user_input == 'help':
             awd.help()
@@ -35,7 +37,7 @@ def main():
         elif user_input == 'do_cache':
             awd.Cache.do_cache(awd.Targets, awd.WebShell)
         elif user_input == 'load_cache':
-            awd.Cache.load_cache(awd.Targets, awd.WebShell)
+            awd.Cache.load_cache(awd.Targets, awd.WebShell, awd)
         elif user_input == 'clear_cache':
             awd.Cache.clear_cache()
         elif user_input == 'add_webshell':
@@ -59,6 +61,7 @@ def main():
         else:
             print('\033[33mWhat Do You Mean?\033[0m')
         print()
+
     print('\033[36mBye~\033[0m')
 
 

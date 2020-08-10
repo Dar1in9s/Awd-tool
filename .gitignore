@@ -1,6 +1,8 @@
 __pycache__/
 .idea/
 test.py
+flag.txt
+hose_list.txt
 *.dat
 *.py[cod]
 *$py.class

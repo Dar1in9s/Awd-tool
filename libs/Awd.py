@@ -136,6 +136,8 @@ class Awd:
 
     def custom_attack(self):
         """自定义攻击"""
+        if len(self.Targets.targets) == 0:
+            return Log.error("Still have not target, use command 'add_target' to add ")
         Log.show('Input the exp name.')
         exp_name = input(' exp_name>').strip()
         if os.path.exists('plugs/{}.py'.format(exp_name)):
@@ -156,6 +158,8 @@ class Awd:
 
     def custom_request(self):
         """自定义发起请求"""
+        if len(self.Targets.targets) == 0:
+            return Log.error("Still have not target, use command 'add_target' to add ")
         path, method, data = None, None, None
         Log.show('Input request path')
         Log.eg('/path/index.php?arg1=value1&arg2=value2')
@@ -186,23 +190,23 @@ class Awd:
     def help():
         Log.show('Usage: COMMAND\n')
         Log.show('Commands:')
-        Log.show('  \033[36mhelp           \033[0m  Show this message.')
-        Log.show('  \033[36mexit/quit      \033[0m  Exit.')
-        Log.show('  \033[36madd_target     \033[0m  Add the ip.')
-        Log.show('  \033[36mshow_targets   \033[0m  Show the ip.')
-        Log.show('  \033[36mclear_targts   \033[0m  Clear the ip.')
-        Log.show('  \033[36madd_webshell   \033[0m  Add the webshell.')
-        Log.show('  \033[36mshow_webshell  \033[0m  Show the webshell.')
-        Log.show('  \033[36mdel_webshell   \033[0m  Delete a webshell.')
-        Log.show('  \033[36mdo_cache       \033[0m  Save the ip, webshell to file.')
-        Log.show('  \033[36mload_cache     \033[0m  Load the ip, webshell from the file.')
-        Log.show('  \033[36mclear_cache    \033[0m  Clear the data of the file.')
-        Log.show('  \033[36moperate_shell  \033[0m  Operate the webshell to get flag.')
-        Log.show('  \033[36mshow_flag      \033[0m  Show the flag.')
-        Log.show('  \033[36mupload_horse   \033[0m  Upload a horse to target server.')
-        Log.show('  \033[36msubmit_flag    \033[0m  Submit the flags(need rewrite the plugs/submit.py)')
-        Log.show('  \033[36mcustom_attack  \033[0m  Custom attack.')
-        Log.show('  \033[36mcustom_request \033[0m  Make a request.\n')
+        Log.help('help', 'Show this message.')
+        Log.help('exit/quit', 'Exit.')
+        Log.help('add_target', 'Add the target.')
+        Log.help('show_targets', 'Show the targets.')
+        Log.help('clear_targets', 'Clear the targets.')
+        Log.help('add_webshell', 'Add the webshell.')
+        Log.help('show_webshell', 'Show the webshell.')
+        Log.help('del_webshell', 'Delete a webshell.')
+        Log.help('do_cache', 'Save the targets, webshell to file.')
+        Log.help('load_cache', 'Load the targets, webshell, flag from the file.')
+        Log.help('clear_cache', 'Clear the data of the file.')
+        Log.help('operate_shell', 'Operate the webshell to get flag.')
+        Log.help('show_flag', 'Show the flag.')
+        Log.help('upload_horse', 'Upload a horse to target server.')
+        Log.help('submit_flag', 'Submit the flags.')
+        Log.help('custom_attack', 'Custom attack.')
+        Log.help('custom_request', 'Make a request.\n')
 
     def process_result(self, result, target, flag_flag):
         """从字符串中获取flag并显示，如果设置了flag_format才保存flag"""

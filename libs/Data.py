@@ -119,9 +119,10 @@ class Cache:
     target_dat = "cache/ip.dat"
     shell_dat = "cache/shell.dat"
     flag_dat = "cache/flag.dat"
+    flag_txt = "cache/flag.txt"
 
     def __init__(self):
-        if os.path.exists('cache'):
+        if not os.path.exists('cache'):
             os.makedirs('cache')
 
     def do_cache(self, target, shell):
@@ -136,7 +137,7 @@ class Cache:
         except Exception as e:
             Log.error(e)
 
-    def load_cache(self, target, shell):
+    def load_cache(self, target, shell, awd):
         if not os.path.exists(self.target_dat) and not os.path.exists(self.shell_dat):
             return Log.error('load data failed, please save data first')
         try:
@@ -150,6 +151,9 @@ class Cache:
                     target_cache = pickle.load(f)
                 target.targets.extend(target_cache)
                 target.targets = list_rm_repeat(target.targets)
+            if os.path.exists(self.flag_dat):
+                with open(self.flag_dat, 'rb') as f:
+                    awd.flag = pickle.load(f)
             Log.success("Load cache ok.")
         except Exception as e:
             Log.error(e)
@@ -162,6 +166,8 @@ class Cache:
                 os.remove(self.target_dat)
             if os.path.exists(self.shell_dat):
                 os.remove(self.shell_dat)
+            if os.path.exists(self.flag_dat):
+                os.remove(self.flag_dat)
             Log.success("clear cache ok.")
         except Exception as e:
             Log.error(e)
@@ -169,10 +175,13 @@ class Cache:
     @staticmethod
     def save_flag(flag):
         # flag格式： {target:[flag], }
-        with open(Cache.flag_dat, 'a') as f:
+        with open(Cache.flag_dat, 'wb') as f:
+            pickle.dump(flag, f)
+        with open(Cache.flag_txt, 'a') as f:
             now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
             f.write("\n" + "*"*73 + "\n")
             f.write("-"*27 + now_time + "-"*27 + "\n")
             f.write("*"*73 + "\n\n")
             for flag in flag.values():
                 f.write("{}\n".format(flag))
+
