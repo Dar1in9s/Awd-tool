@@ -9,17 +9,17 @@
     // "flag_format": null,
     "flag_format": "flag{.*?}",
 
-    // eval码发包时使用eval(base64_decode()) 处理payload
+    // eval马发包时使用eval(base64_decode()) 处理payload
     "eval_base64_coding": true,
 
     // 上传木马后生成的不死马名字
-    "undead_horse_name": ".config_cdut.php",
+    "undead_horse_name": ".config_.php",
 
     // 自定义请求的请求头
     "custom_request_headers": {
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Accept-Language": "zh-CN,zh;q=0.9",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36"
-        }
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36"
+    }
 }

