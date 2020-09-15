@@ -3,7 +3,9 @@ from libs.Misc import Config
 
 
 def attack(ip, port):
-    """传入ip,port
+    """
+    自定义攻击模块
+    传入ip,port
     返回 response.content.decode()
     """
     header = {

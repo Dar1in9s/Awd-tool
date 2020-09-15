@@ -61,7 +61,6 @@ def main():
         else:
             print('\033[33mWhat Do You Mean?\033[0m')
         print()
-
     print('\033[36mBye~\033[0m')
 
 

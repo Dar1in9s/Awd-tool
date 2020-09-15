@@ -1,7 +1,7 @@
 一个目录就是一种木马，所有木马都必须生成HeaderHorse得以利用（header类型）
 
 `UndeadHeaderHorse`  不死马
-`WormHeaderHorse`  蠕虫马(在所有)
+`WormHeaderHorse`  蠕虫马(在所有php文件头部加上马)
 
 木马目录结构：
 ```

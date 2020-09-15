@@ -13,7 +13,7 @@
     "eval_base64_coding": true,
 
     // 上传木马后生成的不死马名字
-    "undead_horse_name": ".config_.php",
+    "undead_horse_name": ".conf.php",
 
     // 自定义请求的请求头
     "custom_request_headers": {

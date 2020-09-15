@@ -23,7 +23,7 @@ class ShellRequest:
     def pre_operate(self, target):
         """操作shell之前的操作，可用于登录"""
         # ip, port = target['ip'], target['port']
-        # data = {'username':'admin','password':'password'}
+        # data = {'user':'admin','pwd':'password'}
         # url = 'http://{}:{}/login.php'.format(ip, port)
         # try:
         #     self.session.post(url, data=data, headers=self.headers, proxies=Config.proxy, timeout=2)

@@ -4,7 +4,7 @@ from libs.Misc import Log, Config
 
 def submit(flags):
     """
-    提交flag，用于批量提交flag
+    批量提交flag
     传入flag格式：{target : [flag1, flag2, ...]}
     """
     url = 'http://47.112.138.115:9999/'                             # 提交flag的url
