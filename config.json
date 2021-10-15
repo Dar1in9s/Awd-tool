@@ -2,12 +2,12 @@
     // 网络代理，设为空则 不代理
     // "proxy": {},
     "proxy": {
-        "http": "127.0.0.1:8080"
+       
     },
 
     // flag格式，设为 None 则无格式
     // "flag_format": null,
-    "flag_format": "flag{.*?}",
+    "flag_format": None,
 
     // eval马发包时使用eval(base64_decode()) 处理payload
     "eval_base64_coding": true,

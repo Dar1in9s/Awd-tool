@@ -7,16 +7,16 @@ def submit(flags):
     批量提交flag
     传入flag格式：{target : [flag1, flag2, ...]}
     """
-    url = 'http://47.112.138.115:9999/'                             # 提交flag的url
-    header = {'Authorization': 'bf37f8391ad3283627b7234f72972d43'}  # 提交flag需要的http头
+    url = 'http://10.1.8.10/event/1/awd/flag/?token=4826efa9d50c137b&flag=%s'# 提交flag的url
+    # 提交flag需要的http头
 
     for target, flags in flags.items():
         Log.blue('[*] {}'.format(target), end=' ====> ')
         Log.blue(flags)
         for flag in flags:
-            flag = {'flag': flag.strip()}
+            flag = flag.strip()
             try:
-                req = requests.post(url, data=flag, headers=header, timeout=2, proxies=Config.proxy)
+                req = requests.post(url%flag, timeout=2, proxies=Config.proxy)
                 Log.show(req.content.decode('utf-8').strip())
             except requests.Timeout:
                 Log.red('timeout')
